@@ -1,1 +1,32 @@
-hi 
+pipeline {
+    agent any
+
+    stages {
+        stage('Development') {
+            steps {
+                script {
+                    def repoDir = 'Jenkins'
+                    if (fileExists(repoDir)) {
+                        bat "cd ${repoDir} && git pull"
+                    } else {
+                        bat "git clone https://github.com/sakshiii-b/Jenkins.git"
+                    }
+                }
+            }
+        }
+
+        stage('QA'){
+            steps{
+                bat '''cd Jenkins
+                echo >newfile.txt
+                echo this is new file>>newfile.txt
+                git add .
+                git config --global user.email "sakshibelsare58@gmail.com"
+                git config --global user.name "sakshiii-b"
+                git commit -m "push from Jenkins"
+                git push https://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@github.com/sakshiii-b/Jenkins.git'''
+            }
+        }
+        
+    }
+}
